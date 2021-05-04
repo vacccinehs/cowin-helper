@@ -1,19 +1,53 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="container-fluid">
-  <div class="card">
+  <div class="card mt-3">
     <div class="card-body">
       <form [formGroup]="vaccineForm">
         <div class="row">
-          <div class="col-6">
-            <input type="date" id="date" name="date" formControlName="date">
+          <div class="col-3 form-group">
+            <label for="date">Date</label>
+            <input type="date" class="form-control" [min]="minDate"  id="date" name="date" formControlName="date">
           </div>
-          <div class="col-6">
-            <input type="text" name="pin" pattern="[0-9]{4}" maxlength="6" formControlName="pin">
+          <div class="col-3 form-group">
+            <label for="pin">Pincode</label>
+            <input type="text" class="form-control" placeholder="Pincode" id="pin"  name="pin" pattern="[0-9]{4}" maxlength="6" formControlName="pin">
           </div>
-          <button type="submit" (click)="vaccineRequest()">Submit</button>
+          <div class="col-2 form-group">
+            <label for="btn"></label>
+          <button type="submit" id="btn" class="btn btn-primary d-block mt-2" (click)="vaccineRequest()">Check Availability</button>
+        </div>
         </div>
       </form>
-      <ng-container *ngIf="response && response.length > 0;else norecordfound">
+      <div class="mt-3 table-responsive">
+      <table class="table">
+        <!-- <caption>List of Available slots</caption> -->
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Address</th>
+            <th scope="col">VaccineName</th>
+            <th scope="col">Age</th>
+            <th scope="col">Time Slots</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="response && response.length > 0;else norecordfound">
+          <tr *ngFor="let res of response; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{res?.address}}, {{res?.district_name}}, {{res?.state_name}}</td>
+            <td>{{res?.vaccine}}</td>
+            <td>{{res?.min_age_limit}}</td>
+            <td>
+              <div *ngFor="let slot of res.slots">
+                {{slot}}
+              </div>
+            </td>
+          </tr>
+         </ng-container>
+        </tbody>
+      </table>
+    </div>
+      <!-- <ng-container *ngIf="response && response.length > 0;else norecordfound">
         <div *ngFor="let res of response;">
           <div class="row mb-2">
             <div class="col-4">
@@ -35,13 +69,19 @@
             </div>
           </div>
         </div>
-      </ng-container>
+      </ng-container> -->
     </div>
   </div>
 </div>
 
 <ng-template #norecordfound>
-  No record found
+  <tr>
+    <td colspan="5">
+  <div class="alert alert-dark text-center" role="alert">
+    No record found
+  </div>
+</td>
+</tr>
 </ng-template>
 
 

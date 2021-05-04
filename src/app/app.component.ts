@@ -14,9 +14,9 @@ export class AppComponent implements OnInit, OnDestroy {
   response: any;
   submitted: boolean = false;
   timer: any;
-  
+  minDate:string = new Date().toISOString();
   constructor(private getSlotService: GetSlotService) {
-
+    this.minDate = new DatePipe('en-US').transform(this.minDate, 'yyyy-MM-dd');
   }
 
   ngOnInit() {
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onSubmit() {
        this.timer = setInterval(() => {
         this.vaccineRequest();      
-      }, 4500);
+      }, 60000);
   }
 
   ngOnDestroy() {

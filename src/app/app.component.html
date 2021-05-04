@@ -1,0 +1,47 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="vaccineForm">
+        <div class="row">
+          <div class="col-6">
+            <input type="date" id="date" name="date" formControlName="date">
+          </div>
+          <div class="col-6">
+            <input type="text" name="pin" pattern="[0-9]{4}" maxlength="6" formControlName="pin">
+          </div>
+          <button type="submit" (click)="vaccineRequest()">Submit</button>
+        </div>
+      </form>
+      <ng-container *ngIf="response && response.length > 0;else norecordfound">
+        <div *ngFor="let res of response;">
+          <div class="row mb-2">
+            <div class="col-4">
+              {{res?.address}}, {{res?.district_name}}, {{ res?.state_name }}
+            </div>
+            <div class="col-2">
+              {{res?.vaccine}}
+            </div>
+            <div class="col-2">
+              {{res?.min_age_limit}}
+            </div>
+            <div class="col-2">
+              {{res?.from}} - {{res?.to}}
+            </div>
+            <div class="col-2">
+              <div *ngFor="let slot of res.slots">
+                {{slot}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #norecordfound>
+  No record found
+</ng-template>
+
+

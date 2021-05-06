@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GetSlotService } from './app.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class AppComponent implements OnInit, OnDestroy {
   minDate:string = new Date().toISOString();
   age: string;
   radioId: string = "btnradio1";
+  isShowBadge:boolean = false;
   constructor(private getSlotService: GetSlotService) {
     this.minDate = new DatePipe('en-US').transform(this.minDate, 'yyyy-MM-dd');
   }
@@ -27,8 +28,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   buildForm() {
     this.vaccineForm = new FormGroup({
-      date: new FormControl(''),
-      pin: new FormControl(''),
+      date: new FormControl('', [Validators.required]),
+      pin: new FormControl('',[Validators.required]),
     });
   }
   
@@ -60,9 +61,23 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this.getSlotService.getDetails(params).subscribe((res) => {
       if(this.age === "18" || this.age === "45") {
-        this.response = res.sessions.filter(slot => slot.min_age_limit <= this.age &&  slot.available_capacity > 0)
+        this.response = res.sessions.filter(slot => slot.min_age_limit <= this.age &&  slot.available_capacity > 0);
       } else{
         this.response = res.sessions;
+      }
+      if(this.response && this.response.length > 0){
+        this.isShowBadge = false;
+        Notification.requestPermission();
+
+        setTimeout(()=>{
+            var notification = new Notification('Sloats availble now!!', {
+                icon: 'https://prod-cdn.preprod.co-vin.in/assets/images/covid19logo.jpg',
+                body: 'Hey there! Sloats for vaccination are availbale now.',
+               });
+        },5000)
+
+      } else{
+        this.isShowBadge = true;
       }
       if(!this.submitted) {
         this.onSubmit();

@@ -10,7 +10,7 @@
           </div>
           <div class="col-3 form-group">
             <label for="pin">Pincode</label>
-            <input type="text" class="form-control" placeholder="Pincode" id="pin"  name="pin" pattern="[0-9]{4}" maxlength="6" formControlName="pin">
+            <input type="text" class="form-control" placeholder="Pincode" id="pin"  name="pin" pattern="[0-9]{6}" maxlength="6" formControlName="pin">
           </div>
           <div class="col-3 form-group">
             <label for="ageGroup">Age</label>
@@ -32,9 +32,10 @@
           </div>
           <div class="col-2 form-group">
             <label for="btn"></label>
-          <button type="submit" id="btn" class="btn btn-primary d-block mt-2" (click)="vaccineRequest()">Check Availability</button>
+          <button type="submit" id="btn" [disabled]="vaccineForm.invalid" class="btn btn-primary d-block mt-2" (click)="vaccineRequest()">Check Availability</button>
         </div>
         </div>
+        <span class="badge badge-info" *ngIf="isShowBadge">Currency No slot(s) are available for this pincode but you will get alert as slot will available.</span>
       </form>
       <div class="mt-3 table-responsive">
       <table class="table">

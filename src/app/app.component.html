@@ -12,6 +12,24 @@
             <label for="pin">Pincode</label>
             <input type="text" class="form-control" placeholder="Pincode" id="pin"  name="pin" pattern="[0-9]{4}" maxlength="6" formControlName="pin">
           </div>
+          <div class="col-3 form-group">
+            <label for="ageGroup">Age</label>
+            <div id="ageGroup" class="btn-group d-block" role="group" aria-label="Basic radio toggle button group" (change)="onChange($event)">
+              
+              <label class="btn btn-outline-primary w-25" for="btnradio1" [ngClass]="{ 'active' : radioId == 'btnradio1' }">
+                <input type="radio" class="btn-check d-none" name="btnradio" id="btnradio1" autocomplete="off" value="All" checked>All
+              </label>
+            
+              <label class="btn btn-outline-primary w-25" for="btnradio2" [ngClass]="{ 'active' : radioId == 'btnradio2' }">
+                <input type="radio" class="btn-check d-none" name="btnradio" id="btnradio2" value="18" autocomplete="off">18
+              </label>
+            
+              <label class="btn btn-outline-primary w-25" for="btnradio3" [ngClass]="{ 'active' : radioId == 'btnradio3' }">
+                <input type="radio" class="btn-check d-none" name="btnradio" id="btnradio3" value="45" autocomplete="off">45
+              </label>
+
+            </div>
+          </div>
           <div class="col-2 form-group">
             <label for="btn"></label>
           <button type="submit" id="btn" class="btn btn-primary d-block mt-2" (click)="vaccineRequest()">Check Availability</button>

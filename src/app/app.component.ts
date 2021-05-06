@@ -15,6 +15,8 @@ export class AppComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   timer: any;
   minDate:string = new Date().toISOString();
+  age: string;
+  radioId: string = "btnradio1";
   constructor(private getSlotService: GetSlotService) {
     this.minDate = new DatePipe('en-US').transform(this.minDate, 'yyyy-MM-dd');
   }
@@ -43,13 +45,25 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  onChange(e): void {
+    if(e && e.target && e.target.value) {
+      this.radioId = e.target.id;
+      this.age = e.target.value;
+
+    }
+  }
+
   vaccineRequest(): void {
     let params = {
       date: new DatePipe('en-US').transform(this.vaccineForm.controls.date.value, 'dd/MM/yyyy'),
       pin: this.vaccineForm.controls.pin.value
     }
     this.getSlotService.getDetails(params).subscribe((res) => {
-      this.response = res.sessions;
+      if(this.age === "18" || this.age === "45") {
+        this.response = res.sessions.filter(slot => slot.min_age_limit <= this.age &&  slot.available_capacity > 0)
+      } else{
+        this.response = res.sessions;
+      }
       if(!this.submitted) {
         this.onSubmit();
       }
